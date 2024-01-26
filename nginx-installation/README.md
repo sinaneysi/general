@@ -14,9 +14,9 @@ first you should get the package from nginx.org, you can access it from here
   ./configure
 ```
 
-> **if you facing this**
->> **error: C comiler cc is not found**
-> **then you should install build-esential**
+**if you facing this**
+> **error: C comiler cc is not found**
+**then you should install build-esential**
 ```bash
 sudo apt-get install build-esential
 ```
