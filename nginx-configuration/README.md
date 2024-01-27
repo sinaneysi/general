@@ -27,7 +27,7 @@ sudo apt install build-essential
 ```
 **and if you got another error saying requires the PCRE library you can run folowing command**
 ```bash
-sudo apt-get install iibpcre3 iibpcre3-dev zlib1g zlib1g-dev libssl-dev
+sudo apt-get install libpcre3 libpcre3-dev zlib1g zlib1g-dev libssl-dev
 ```
 now all good we wll continue runing commands
 ```bash
