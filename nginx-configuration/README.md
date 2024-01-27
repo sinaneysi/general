@@ -38,7 +38,7 @@ make install
 
 nginx
 ```
-you can check that nginx is up by access your localhost on port 80 or run this command
+now check if nginx running with following command
 ```bash
 ps aux | grep nginx
 ```
