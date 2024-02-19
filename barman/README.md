@@ -67,3 +67,8 @@ barman switch-wal --force -archive <db_hostname>
 ```bash
 barman backup <db_hostname>
 ```
+***you can automate the job with crontab just append the following line to your cron file***
+```bash
+# this cron run the backup every night in 10pm 
+0 22 * * * barman backup <db_hostname>
+```
