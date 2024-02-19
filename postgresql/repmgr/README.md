@@ -22,7 +22,7 @@ use_replication_slots=true
 ```
 ***create user for repmgr in postgresql server***
 ```bsah
-psql -c "CREATE USER repmgr WITH REPLICATION"
+psql -c "CREATE USER repmgr WITH superuser"
 ```
 ***create database for repmgr***
 ```bash
