@@ -32,11 +32,11 @@ psql -c "CREATE DATABASE repmgr owner repmgr"
 ```bash
 local 	replication 	repmgr 		 			trust
 host 	replication 	repmgr 		 172.21.0.0/24		trust
-host 	replication 	repmgr 		 127.0.0.1/24		trust
+host 	replication 	repmgr 		 127.0.0.1/32		trust
 
 local 	repmgr  	repmgr 		 			trust
 host 	repmgr  	repmgr 		 172.21.0.0/24		trust
-host 	repmgr  	repmgr 		 127.0.0.1/24		trust
+host 	repmgr  	repmgr 		 127.0.0.1/32		trust
 ```
 ***go to postgresql.conf file and uncomment the below line***
 ```bash
