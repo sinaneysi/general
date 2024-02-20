@@ -1,5 +1,5 @@
 ***on barman server***
-vim /etc/barman.d/<dbname>
+vim /etc/barman.d/\<dbname>
 ```bash
 [db]
 active = true
