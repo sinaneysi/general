@@ -43,3 +43,13 @@ host 	repmgr  	repmgr 		 127.0.0.1/32		trust
 shared_preload_libraries = 'repmgr'
 ```
 restart the postgres after modifying this config
+
+***then we register primary repmgr on db1 server***
+```bash
+repmgr primary register
+# you can verify it by doing following command
+repmgr cluster show
+```
+***with provided command we connect the second db server to barman***
+```bash
+repmgr -h db -U repmgr -d repmgr -F standby clone --dry-run
