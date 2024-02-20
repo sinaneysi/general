@@ -61,7 +61,7 @@ barman check <db_hostname>
 
 ***now we are getting closer to the end,with this command we tell postgres close the archive file and ship it over***
 ```bash
-barman switch-wal --force -archive <db_hostname>
+barman switch-wal --force --archive <db_hostname>
 ```
 ***now we finally get backup***
 ```bash
