@@ -1,0 +1,87 @@
+version: '3.8'
+
+networks:
+  web_net:
+    driver: overlay
+  app_net:
+    driver: overlay
+
+x-common-env:
+  &common-env
+    REPMGR_PASSWORD: repmgr
+    REPMGR_PARTNER_NODES: pg-0,pg-1,pg-2:5432
+    REPMGR_PORT_NUMBER: 5432
+    REPMGR_PRIMARY_HOST: pg-0
+    REPMGR_PRIMARY_PORT: 5432
+    POSTGRESQL_POSTGRES_PASSWORD: postgres
+    POSTGRESQL_USERNAME: postgres
+    POSTGRESQL_PASSWORD: postgres 
+    POSTGRESQL_DATABASE: postgres 
+    POSTGRESQL_SHARED_PRELOAD_LIBRARIES: pgaudit, pg_stat_statements
+    POSTGRESQL_SYNCHRONOUS_COMMIT_MODE: remote_write
+    POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS: 2
+
+services:
+  pg-0:
+    image: docker.io/bitnami/postgresql-repmgr:15
+    deploy:
+      replicas: 1
+        # placement:
+        #   constraints:
+        #     - node.labels.type == pg-0
+    networks:
+      - app_net
+    volumes:
+      - pg_0_data:/bitnami/postgresql
+    environment:
+      <<: *common-env
+      REPMGR_NODE_NAME: pg-0
+      REPMGR_NODE_NETWORK_NAME: pg-0
+
+  pg-1:
+    image: docker.io/bitnami/postgresql-repmgr:15
+    deploy:
+      replicas: 1
+        # placement:
+        #   constraints:
+        #     - node.labels.type == pg-1
+    networks:
+      - app_net
+    volumes:
+      - pg_1_data:/bitnami/postgresql
+    environment:
+      <<: *common-env
+      REPMGR_NODE_NAME: pg-1
+      REPMGR_NODE_NETWORK_NAME: pg-1
+
+  pg-2:
+    image: docker.io/bitnami/postgresql-repmgr:15
+    deploy:
+      replicas: 1
+        # placement:
+        #   constraints:
+        #     - node.labels.type == pg-2
+    networks:
+      - app_net
+    volumes:
+      - pg_2_data:/bitnami/postgresql
+    environment:
+      <<: *common-env
+      REPMGR_NODE_NAME: pg-2
+      REPMGR_NODE_NETWORK_NAME: pg-2
+
+  haproxy:
+    image: haproxy:swarm
+    networks:
+      - app_net
+      - web_net
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+
+volumes:
+  pg_0_data:
+  pg_1_data:
+  pg_2_data:
+
