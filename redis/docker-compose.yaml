@@ -1,0 +1,94 @@
+networks:
+  app_net:
+    external: false
+    name: app_net
+x-common: &service-param
+  image: bitnami/redis-sina
+  networks:
+    - app_net
+  environment:
+    - 'ALLOW_EMPTY_PASSWORD=yes'
+    - 'REDIS_AOF_ENABLED=no'
+  command: ['redis-server','/data/redis.conf']
+  volumes:
+    - './redis/redis.conf:/data/redis.conf'
+x-sentinel-params: &sentinel-params
+  image: bitnami/redis-sentinel
+  networks:
+    - app_net
+  environment:
+    - 'ALLOW_EMPTY_PASSWORD=yes'
+    - 'REDIS_AOF_ENABLED=no'
+  depends_on:
+    - redis-1
+    - redis-2
+    - redis-3
+    - redis-4
+    - redis-5
+    - redis-6
+    - redis-cli
+services:
+  redis-cli:
+    depends_on:
+      - redis-1
+      - redis-2
+      - redis-3
+      - redis-4
+      - redis-5
+      - redis-6
+    image: bitnami/redis
+    command: ["sh", "-c", "echo yes | redis-cli --cluster create redis-1:6379 redis-2:6379 redis-3:6379 redis-4:6379 redis-5:6379 redis-6:6379 --cluster-replicas 1"]
+    networks:
+      - app_net
+  redis-1:
+    <<: *service-param
+      # - './bitnami/redis:/bitnami/redis'
+    # volumes:
+    #   - './redis:/opt/bitnami/redis/etc'
+  redis-2: 
+    <<: *service-param
+      # - './bitnami/redis:/bitnami/redis'
+    # volumes:
+    #   - './redis:/opt/bitnami/redis/etc'
+
+  redis-3:
+    <<: *service-param
+      # - './bitnami/redis:/bitnami/redis'
+    # volumes:
+    #   - './redis:/opt/bitnami/redis/etc'
+
+  redis-4: 
+    <<: *service-param
+      # - './bitnami/redis:/bitnami/redis'
+    # volumes:
+    #   - './redis:/opt/bitnami/redis/etc'
+  redis-5:
+    <<: *service-param
+      # - './bitnami/redis:/bitnami/redis'
+    # volumes:
+    #   - './redis:/opt/bitnami/redis/etc'   
+  redis-6: 
+    <<: *service-param
+      # - './bitnami/redis:/bitnami/redis'
+    # volumes:
+    #   - './redis:/opt/bitnami/redis/etc'   
+  redis-sentinel: 
+    <<: *sentinel-params
+    volumes:
+      - './sentinel:/bitnami/redis-sentinel/conf'
+  redis-sentinel2:
+    <<: *sentinel-params
+    volumes:
+      - './sentinel:/bitnami/redis-sentinel/conf'
+  redis-sentinel3: 
+    <<: *sentinel-params
+    volumes:
+      - './sentinel:/bitnami/redis-sentinel/conf'
+  haproxy:
+    image: haproxy
+    ports:
+      - '8080:8080'
+    volumes:
+      - './conf-haproxy:/usr/local/etc/haproxy'
+    networks:
+      - app_net

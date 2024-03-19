@@ -1,0 +1,11 @@
+networks:
+  app_net:
+    external: false
+    name: app_net
+services:
+  redis-1:
+    image: redis
+    networks:
+      - app_net:
+  redis-2:
+    
